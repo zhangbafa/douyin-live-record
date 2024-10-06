@@ -34,6 +34,12 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: npm run build-w
 
+      - name: build-winz-32
+        run: npm run build-wz-32
+
+      - name: build-winz-64
+        run: npm run build-wz-64
+
       - name: release
         uses: softprops/action-gh-release@v1
         with:
