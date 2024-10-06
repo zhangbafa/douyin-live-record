@@ -1,7 +1,7 @@
 {
-  "productName": "ee",
-  "appId": "com.electron.ee",
-  "copyright": "© 2023 哆啦好梦 Technology Co., Ltd.",
+  "productName": "直播录制",
+  "appId": "com.douyinlive.record",
+  "copyright": "",
   "directories": {
     "output": "out"
   },
@@ -26,7 +26,7 @@
     "installerHeaderIcon": "build/icons/icon.ico",
     "createDesktopShortcut": true,
     "createStartMenuShortcut": true,
-    "shortcutName": "EE框架"
+    "shortcutName": "直播录制"
   },
   "publish": [
     {
