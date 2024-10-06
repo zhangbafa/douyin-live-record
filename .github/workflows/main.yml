@@ -55,5 +55,6 @@ jobs:
             out/*.tar.gz
             out/*.yml
             out/*.blockmap
+            out/*.7z
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
