@@ -10,7 +10,7 @@
             style="width: 98%"
           >
             <a-form-item field="savedir" label="保存位置">
-              <a-input v-model="form.savedir" placeholder="" allow-clear />
+              <a-input v-model="form.savedir" placeholder="" allow-clear readonly />
               <a-button
                 @click="handleSelectFolder"
                 :style="{ marginLeft: '10px' }"

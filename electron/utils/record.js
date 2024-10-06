@@ -2,7 +2,6 @@ const { app } = require("electron");
 const ffmpeg = require("fluent-ffmpeg");
 const ffprobe = require("@ffprobe-installer/ffprobe");
 const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
-console.log(ffmpegPath);
 const Conf = require("ee-core/config");
 const UtilsHelper = require("ee-core/utils/helper");
 
@@ -10,7 +9,7 @@ const path = require("path");
 const fs = require("fs");
 
 ffmpeg.setFfprobePath(ffprobe.path);
-ffmpeg.setFfmpegPath("/Users/zhang1/Downloads/ffmpeg");
+ffmpeg.setFfmpegPath(ffmpegPath);
 
 function formatDate(date) {
   const year = date.getFullYear();
@@ -24,19 +23,21 @@ function formatDate(date) {
 }
 // 开始录制
 function startRecording(params) {
-  config = Conf.getValue('recordSavePath')
+  const config = Conf.getValue('recordSavePath')
+  console.log(config)
   let defaultSavePath = app.getPath("downloads")
-  if(config.savedir){
+  if(config && ('savedir' in config) && config.savedir!==''){
     defaultSavePath = config.savedir
   }
   const { name, title, id: streamId, streamUrl, recordType } = params;
   const now = new Date();
   const formattedDate = formatDate(now);
-  const savePath = path.join(defaultSavePath, "wuju", name);
+  const savePath = path.join(defaultSavePath, "wuju", name.replaceAll('/',''));
   UtilsHelper.mkdir(savePath);
   const fileExtension = recordType == "video" ? ".flv" : ".wav";
   console.log(`recordType:${recordType}`);
-  const outputFilePath = `${savePath}/${title}_${formattedDate}${fileExtension}`;
+  const titleTem = sanitizeFileName(title)
+  const outputFilePath = `${savePath}/${titleTem}_${formattedDate}${fileExtension}`;
   const outputStream = fs.createWriteStream(outputFilePath);
   const recordingProcess = ffmpeg(streamUrl).output(outputStream);
   if (recordType == "video") {
@@ -75,6 +76,27 @@ function stopRecording(params) {
     recordingProcess.kill("SIGINT");
     delete global.recordingProcesses[streamId];
   }
+}
+
+function sanitizeFileName(fileName) {
+  // 定义不允许的字符
+  const illegalChars = /[<>:"/\\|?*]/g;
+  const controlChars = /[\x00-\x1F\x80-\x9F]/g;
+  const reservedNames = /^(con|prn|aux|nul|com\d|lpt\d)$/i;
+
+  // 替换非法字符
+  let sanitizedFileName = fileName.replace(illegalChars, '');
+  sanitizedFileName = sanitizedFileName.replace(controlChars, '');
+
+  // 检查保留字
+  if (reservedNames.test(sanitizedFileName)) {
+    sanitizedFileName = '_' + sanitizedFileName;
+  }
+
+  // 去除前后空格
+  sanitizedFileName = sanitizedFileName.trim();
+
+  return sanitizedFileName;
 }
 module.exports = {
   startRecording,

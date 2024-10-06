@@ -23,11 +23,11 @@ module.exports = (appInfo) => {
    * 主窗口
    */
   config.windowsOption = {
-    title: '直播助手',
-    width: 1100,
+    title: '小红点录播助手',
+    width: 440,
     height: 650,
-    minWidth: 380,
-    minHeight: 650,
+    minWidth: 700,
+    minHeight: 700,
     webPreferences: {
       webSecurity: false,
       contextIsolation: false, // false -> 可在渲染进程中使用electron的api，true->需要bridge.js(contextBridge)
@@ -63,7 +63,7 @@ module.exports = (appInfo) => {
    */    
   config.remoteUrl = {
     enable: false,
-    url: 'http://electron-egg.kaka996.com/'
+    url: ''
   };
 
   /**
@@ -153,7 +153,7 @@ module.exports = (appInfo) => {
     },
     tray: {
       enable: true,
-      title: 'EE程序',
+      title: 'xiaohongdian',
       icon: '/public/images/tray.png'
     },
     security: {

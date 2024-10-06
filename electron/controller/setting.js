@@ -33,7 +33,7 @@ class SettingController extends Controller {
    */
   async getCookie(){
     const config = Conf.getValue('recordSavePath')
-    if(config.cookie){
+    if(config && ('cookie' in config)){
       return config.cookie
     }
     return {}

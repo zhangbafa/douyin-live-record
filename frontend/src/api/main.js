@@ -4,33 +4,7 @@ import { getStorageDir } from "ee-core/ps"
  * 主进程与渲染进程通信频道定义
  * Definition of communication channels between main process and rendering process
  */
-const liveStreamApi = {
-  list: 'controller.livestream.list',
-  findone: 'controller.livestream.findone',
-  create: 'controller.livestream.create',
-  delete: 'controller.livestream.delete',
-  openDirectory:'controller.livestream.openDirectory',
-  lastAccessTime:'controller.livestream.lastAccessTime',
-  quickAccess:'controller.livestream.quickAccess',
-  search: 'controller.livestream.search'
 
-  
-}
-
-const workspaceApi = {
-  list: 'controller.workspace.list',
-  create: 'controller.workspace.create',
-  update: 'controller.workspace.update',
-  delete: 'controller.workspace.delete',
-  setdefault: 'controller.workspace.setdefault',
-}
-
-const videoApi = {
-  list: 'controller.video.list',
-  createWindow: 'controller.video.createWindow',
-  selectvideo: 'controller.video.selectvideo',
-  savevideo: 'controller.video.savevideo',
-}
 
 const settingApi = {
   getMachineId: 'controller.setting.getMachineId',
@@ -64,9 +38,7 @@ const helperApi={
 const payApi = {}
 const authApi = {}
 export {
-  liveStreamApi,
-  workspaceApi,
-  videoApi,
+ 
   settingApi,
   payApi,
   authApi,

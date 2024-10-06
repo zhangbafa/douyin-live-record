@@ -299,11 +299,11 @@ const handleStartRecord = async (item, type) => {
     return false;
   }
   
-  
   const pullStream = await isLive(item.id, cookie)
+  console.log(pullStream)
   let pullStreamUrl = ''
   if(pullStream.streamUrl){
-     pullStreamUrl = pullStream.streamUrl.flv_pull_url.HD1
+     pullStreamUrl = Object.values(pullStream.streamUrl.flv_pull_url)[0]
   }else{
     Notification.info({
       title: "系统通知",

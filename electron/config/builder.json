@@ -1,6 +1,6 @@
 {
-  "productName": "直播录制",
-  "appId": "com.douyinlive.record",
+  "productName": "小红点",
+  "appId": "com.xiaohongdian.record",
   "copyright": "",
   "directories": {
     "output": "out"
@@ -11,7 +11,8 @@
     "!frontend/",
     "!run/",
     "!logs/",
-    "!data/"
+    "!data/",
+    "!electron/"
   ],
   "extraResources": {
     "from": "build/extraResources/",
@@ -26,7 +27,7 @@
     "installerHeaderIcon": "build/icons/icon.ico",
     "createDesktopShortcut": true,
     "createStartMenuShortcut": true,
-    "shortcutName": "直播录制"
+    "shortcutName": "小红点直播助手"
   },
   "publish": [
     {
