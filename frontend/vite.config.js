@@ -42,6 +42,17 @@ export default defineConfig(({ command, mode }) => {
           drop_debugger: true,
         },
       },
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            // 将第三方库拆分成单独的包
+            vendor: ['vue', 'vue-router'],
+
+            // 将其他模块拆分成单独的包
+            // utils: ['lodash', 'moment'],
+          },
+        },
+      },
     },
   }
 })

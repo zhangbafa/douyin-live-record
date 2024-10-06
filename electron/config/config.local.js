@@ -25,6 +25,11 @@ module.exports = (appInfo) => {
     messageLog: true
   };   
 
+  /**
+   * 录制视频配置
+   */
+  config.recordSavePath={}
+
   return {
     ...config
   };

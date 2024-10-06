@@ -23,13 +23,13 @@ module.exports = (appInfo) => {
    * 主窗口
    */
   config.windowsOption = {
-    title: 'EE框架',
-    width: 980,
+    title: '直播助手',
+    width: 1100,
     height: 650,
-    minWidth: 400,
-    minHeight: 300,
+    minWidth: 380,
+    minHeight: 650,
     webPreferences: {
-      //webSecurity: false,
+      webSecurity: false,
       contextIsolation: false, // false -> 可在渲染进程中使用electron的api，true->需要bridge.js(contextBridge)
       nodeIntegration: true,
       //preload: path.join(appInfo.baseDir, 'preload', 'bridge.js'),
@@ -37,6 +37,10 @@ module.exports = (appInfo) => {
     frame: true,
     show: false,
     icon: path.join(appInfo.home, 'public', 'images', 'logo-32.png'),
+    // titleBarStyle:'hidden',
+    // trafficLightPosition:{x:15,y:15},
+    // vibrancy: 'light',  // 'light', 'medium-light' etc
+    // visualEffectState: "active" ,
   };
 
   /**

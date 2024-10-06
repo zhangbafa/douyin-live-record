@@ -1,10 +1,10 @@
 const { Application } = require('ee-core');
-
+global.recordingProcesses = {}
 class Index extends Application {
 
   constructor() {
     super();
-    // this === eeApp;
+   
   }
 
   /**
@@ -12,6 +12,7 @@ class Index extends Application {
    */
   async ready () {
     // do some things
+
   }
 
   /**
