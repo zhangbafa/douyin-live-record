@@ -30,9 +30,6 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: build-sqlite3
-        run: npm run resqlite
-
       - name: build-win
         if: matrix.os == 'windows-latest'
         run: npm run build:win
