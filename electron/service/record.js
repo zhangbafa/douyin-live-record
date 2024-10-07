@@ -1,9 +1,7 @@
 'use strict';
 
 const { Service } = require('ee-core');
-const { PrismaClient } = require('@prisma/client')
 const { getVideoInfoAndThumbnail } = require('../utils/ffmpeg')
-// const prisma = new PrismaClient()
 const Storage = require('ee-core/storage'); 
 
 /**

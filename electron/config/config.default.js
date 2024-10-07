@@ -154,7 +154,7 @@ module.exports = (appInfo) => {
     tray: {
       enable: true,
       title: 'xiaohongdian',
-      icon: '/public/images/tray.png'
+      icon: '/public/images/tray@2x.png'
     },
     security: {
       enable: true,

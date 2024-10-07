@@ -1,7 +1,7 @@
 {
   "name": "xiaohongdian",
   "version": "1.0.10",
-  "description": "小红点直播助手",
+  "description": "xiaohongdian",
   "main": "main.js",
   "scripts": {
     "dev": "ee-bin dev",

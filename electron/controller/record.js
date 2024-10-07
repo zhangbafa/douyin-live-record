@@ -9,7 +9,6 @@ const Utils = require('ee-core/utils');
 const UtilsHelper = require('ee-core/utils/helper');
 const {isLive,cookie} = require('../utils/islive')
 const HttpClient = require('ee-core/httpclient');
-const { method } = require('lodash');
 
 /**
  * example

@@ -8,7 +8,7 @@ const Addon = require("ee-core/addon");
 const Conf = require('ee-core/config');
 const Utils = require('ee-core/utils');
 const Ps = require("ee-core/ps");
-
+const path = require('path')
 /**
  * example
  * @class

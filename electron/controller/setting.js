@@ -6,7 +6,7 @@ const Services = require("ee-core/services");
 const { dialog,app } = require("electron");
 const Addon = require("ee-core/addon");
 const Ps = require("ee-core/ps");
-const { machineId, machineIdSync } = require("node-machine-id");
+// const { machineId, machineIdSync } = require("node-machine-id");
 const Conf = require('ee-core/config');
 const conf = require("ee-core/config/cache");
 
@@ -82,7 +82,7 @@ class SettingController extends Controller {
    * @param event - ipc通信时才有值。详情见：控制器文档
    */
   async getMachineId() {
-    let id = await machineId();
+    let id = await Utils.machineId()
     return id;
   }
 }

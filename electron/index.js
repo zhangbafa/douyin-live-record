@@ -4,7 +4,8 @@ class Index extends Application {
 
   constructor() {
     super();
-   
+    console.log(process.env.EE_HOME)
+    console.log(process.env.EE_APP_USER_DATA)
   }
 
   /**

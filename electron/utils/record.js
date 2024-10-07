@@ -32,7 +32,7 @@ function startRecording(params) {
   const { name, title, id: streamId, streamUrl, recordType } = params;
   const now = new Date();
   const formattedDate = formatDate(now);
-  const savePath = path.join(defaultSavePath, "wuju", name.replaceAll('/',''));
+  const savePath = path.join(defaultSavePath, "小红点录播助手", name.replaceAll('/',''));
   UtilsHelper.mkdir(savePath);
   const fileExtension = recordType == "video" ? ".flv" : ".wav";
   console.log(`recordType:${recordType}`);

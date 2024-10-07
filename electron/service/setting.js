@@ -1,9 +1,7 @@
 'use strict';
 
 const { Service } = require('ee-core');
-const { PrismaClient } = require('@prisma/client')
 const { getVideoInfoAndThumbnail } = require('../utils/ffmpeg')
-const prisma = new PrismaClient()
 /**
  * 示例服务（service层为单例）
  * @class

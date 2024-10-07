@@ -15,7 +15,7 @@
         </template>
         <a-tab-pane key="1" title="主播列表" style="box-sizing: border-box">
           <div class="live-container">
-            <div class="item" v-for="item in zhuboList" :key="item.id">
+            <div class="item" v-if="zhuboList && zhuboList.length>0" v-for="item in zhuboList" :key="item.id">
               <a-dropdown
                 trigger="contextMenu"
                 alignPoint
@@ -152,6 +152,9 @@
                 </template>
               </a-dropdown>
             </div>
+            <div style="height: 90vh;display: flex;align-items: center;" v-else>
+              <a-empty description="暂无主播"/>
+            </div>
           </div>
         </a-tab-pane>
         <a-tab-pane
@@ -189,6 +192,11 @@
               </a-col>
             </a-row>
           </a-form>
+          <div>
+            {{ illegallyList }}
+            <a-divider/>
+            {{ failedList }}
+          </div>
         </a-tab-pane>
       </a-tabs>
     </div>
@@ -224,28 +232,41 @@ ipc.invoke(settingApi.getCookie).then(res=>{
 const form = reactive({
   content: "",
 });
+const failedList = ref([])
+const illegallyList = ref([])
 const handleSubmit = ({ values, errors }) => {
   if (values.content) {
     // console.log("values:", values, "\nerrors:", errors);
     const link = values.content.split("\n");
 
     link.forEach((element) => {
+      const regex = /^https:\/\/live\.douyin\.com\/\d+$/;
+      if(!regex.test(element)){
+        // 不是有效的地址
+        illegallyList.value.push(element)
+        return
+      }
       const roomID = element.match(/\d+/)[0];
       isLive(roomID, cookie).then((res) => {
-        console.log(res);
-        console.log(typeof res.status);
         const data = {
           id: roomID,
-          name: res.nickname,
+          name: '',
           islive: res.status === "2" ? true : false,
           avatar: res.avatar,
           title: res.title,
           recording: 0,
+          secUid: res.secUid
         };
-        zhuboList.value.unshift(data);
-        ipc.invoke(recordApi.create, data).then((res) => {
-          console.log(res);
-        });
+        if(data.name==''){
+          failedList.value.push(element)
+          return
+        }else{
+          zhuboList.value.unshift(data);
+          ipc.invoke(recordApi.create, data).then((res) => {
+            console.log(res);
+          });
+        }
+        
       });
     });
     Notification.info({
