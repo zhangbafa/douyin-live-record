@@ -9,7 +9,7 @@ const Utils = require('ee-core/utils');
 const UtilsHelper = require('ee-core/utils/helper');
 const {isLive,cookie} = require('../utils/islive')
 const HttpClient = require('ee-core/httpclient');
-const Conf = require('ee-cord/config')
+const Conf = require('ee-core/config')
 const path = require('path')
 /**
  * example
