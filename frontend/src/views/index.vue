@@ -30,13 +30,14 @@
                   </div>
                   <div class="nickname-title">
                     <div class="nickname">
+                      <span style="" class="multi-line-ellipsis">
                       {{ item.name }}
+                      </span>
                       <template v-if="item.islive === 2">
                         <a-badge
                           text="直播中"
                           :dot-style="{
-                            transform: 'scale(0.8)',
-                            marginTop: '4px',
+                            marginLeft: '8px',
                             backgroundColor: 'green',
                           }"
                         />
@@ -45,8 +46,7 @@
                         <a-badge
                           text="已下播"
                           :dot-style="{
-                            transform: 'scale(0.8)',
-                            marginTop: '4px',
+                            marginLeft: '8px',
                           }"
                         />
                       </template>
@@ -54,8 +54,7 @@
                         <a-badge
                           text="未检测"
                           :dot-style="{
-                            transform: 'scale(0.8)',
-                            marginTop: '4px',
+                            marginLeft: '8px',
                             backgroundColor: 'gray',
                           }"
                         />
@@ -64,8 +63,7 @@
                         <a-badge
                           text="音频录制中"
                           :dot-style="{
-                            transform: 'scale(0.8)',
-                            marginTop: '4px',
+                            marginLeft: '8px',
                             backgroundColor: 'green',
                           }"
                         />
@@ -74,8 +72,7 @@
                         <a-badge
                           text="视频录制中"
                           :dot-style="{
-                            transform: 'scale(0.8)',
-                            marginTop: '4px',
+                            marginLeft: '8px',
                             backgroundColor: 'green',
                           }"
                         />
@@ -83,7 +80,7 @@
 
                       <template v-if="checkLiveId === item.id">
                         <icon-refresh
-                          :size="14"
+                          :size="18"
                           spin
                           style="margin-left: 8px"
                         />
@@ -92,7 +89,7 @@
                       <!-- 
                       <a-badge text="录制中" :dot-style="{transform:'scale(0.8)',backgroundColor:'green'}"/> -->
                     </div>
-                    <div class="title">
+                    <div class="title multi-line-ellipsis">
                       {{ item.title }}
                     </div>
                   </div>
@@ -153,7 +150,7 @@
               </a-dropdown>
             </div>
             <div style="height: 90vh;display: flex;align-items: center;" v-else>
-              <a-empty description="暂无主播"/>
+              <a-empty description="暂无数据"/>
             </div>
           </div>
         </a-tab-pane>
@@ -193,9 +190,14 @@
             </a-row>
           </a-form>
           <div>
-            {{ illegallyList }}
-            <a-divider/>
-            {{ failedList }}
+            <!-- 失败的 -->
+            <a-alert type="error" closable style="margin-top: 10px" v-if="failedList && failedList.length>0">
+              <template #title>
+                获取失败，点击重新尝试
+              </template>
+              <a-link v-for="item in failedList" :key="item" @click="handleTryGetLiveInfo(item)">{{ item }}</a-link>
+            </a-alert>
+            
           </div>
         </a-tab-pane>
       </a-tabs>
@@ -234,12 +236,8 @@ const form = reactive({
 });
 const failedList = ref([])
 const illegallyList = ref([])
-const handleSubmit = ({ values, errors }) => {
-  if (values.content) {
-    // console.log("values:", values, "\nerrors:", errors);
-    const link = values.content.split("\n");
-
-    link.forEach((element) => {
+const getLiveInfo=(link,type="multi")=>{
+  link.forEach((element) => {
       const regex = /^https:\/\/live\.douyin\.com\/\d+$/;
       if(!regex.test(element)){
         // 不是有效的地址
@@ -250,7 +248,7 @@ const handleSubmit = ({ values, errors }) => {
       isLive(roomID, cookie).then((res) => {
         const data = {
           id: roomID,
-          name: '',
+          name: res.nickname,
           islive: res.status === "2" ? true : false,
           avatar: res.avatar,
           title: res.title,
@@ -258,25 +256,53 @@ const handleSubmit = ({ values, errors }) => {
           secUid: res.secUid
         };
         if(data.name==''){
-          failedList.value.push(element)
+          if(!failedList.value.includes(element)){
+            failedList.value.push(element)
+          }
+          if(type!=='multi'){
+            Notification.info({
+              title: "系统通知",
+              content: "尝试失败",
+              position: "bottomRight",
+            });
+          }
           return
         }else{
           zhuboList.value.unshift(data);
           ipc.invoke(recordApi.create, data).then((res) => {
             console.log(res);
+            // if(type!=='multi'){
+            Notification.info({
+              title: "系统通知",
+              content: "尝试成功",
+              position: "bottomRight",
+            });
+            // 删除成功的哪个
+          // }
           });
         }
         
       });
     });
-    Notification.info({
-      title: "系统通知",
-      content: "添加成功",
-      position: "bottomRight",
-    });
+}
+const handleSubmit = ({ values, errors }) => {
+  if (values.content) {
+    // console.log("values:", values, "\nerrors:", errors);
+    const link = values.content.split("\n");
+
+    getLiveInfo(link,'multi')
+    // Notification.info({
+    //   title: "系统通知",
+    //   content: "添加成功",
+    //   position: "bottomRight",
+    // });
   }
 };
 
+
+const handleTryGetLiveInfo=(item)=>{
+  getLiveInfo([item],'single')
+}
 // 直播间列表管理
 // 获取列表
 const zhuboList = ref();
@@ -355,13 +381,17 @@ const handleStopRecord = (item) => {
 };
 // 打开直播间主页
 const handleHomePage = (item) => {
-  const url = `https://live.douyin.com/${item.id}`;
+  let url = ''
+  if(item.secUid){
+    url = `https://www.douyin.com/user/${item.secUid}`;
+  }else{
+    url = `https://live.douyin.com/${item.id}`;
+  }
   ipc.invoke(recordApi.homePage, { url: url });
 };
 // 打开视频所在目录
 const handleOpenDirname = (item) => {
-  const path = `/Users/zhang1/Downloads`;
-  ipc.invoke(recordApi.openVideoDir, { path: path });
+  ipc.invoke(recordApi.openVideoDir, { path: item.title });
 };
 // 删除直播间
 const handleDeleteLive = (item) => {
@@ -376,7 +406,7 @@ const handleSetting = () => {
     content: "#/record/setting",
     windowName: "window-vue",
     windowTitle: "系统设置",
-    width: 400,
+    width: 440,
     height: 650
   });
 };
@@ -435,11 +465,13 @@ const handleSetting = () => {
       .nickname {
         font-weight: bold;
         display: flex;
+        justify-content: flex-start;
         align-items: center;
+        font-size: 16px;
       }
       .title {
         font-weight: 300;
-        font-size: 12px;
+        font-size: 14px;
         margin-top: 8px;
       }
     }
@@ -448,7 +480,11 @@ const handleSetting = () => {
     padding-right: 8px;
   }
 }
-
+.multi-line-ellipsis {
+  white-space: nowrap; /* 防止文本换行 */
+    overflow: hidden; /* 隐藏超出部分 */
+    text-overflow: ellipsis; /* 显示省略号 */
+}
 .breathing-light {
   color: rgb(var(--primary-6));
   font-size: 12px;

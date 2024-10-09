@@ -94,7 +94,7 @@ async function isLive(roomId, cookie) {
   
   if (ownerMatch) {
     const owner  = JSON.parse(ownerMatch[1]+'}')
-    result.avatar = owner.avatar_thumb.url_list[0]
+    result.avatar = owner.avatar_thumb?.url_list[0]
     result.nickname = owner.nickname
     result.secUid = owner.sec_uid
     result.idStr = owner.id_str

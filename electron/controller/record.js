@@ -9,7 +9,8 @@ const Utils = require('ee-core/utils');
 const UtilsHelper = require('ee-core/utils/helper');
 const {isLive,cookie} = require('../utils/islive')
 const HttpClient = require('ee-core/httpclient');
-
+const Conf = require('ee-cord/config')
+const path = require('path')
 /**
  * example
  * @class
@@ -62,14 +63,23 @@ class RecordController extends Controller {
     return result
   }
 
-  // 打开主页
+  // 主页
   async homePage(args) {
     shell.openExternal(args.url)
   }
 
   // 打开视频所在目录
   async openVideoDir(args){
-    shell.openPath(args.path).then((error) => {
+    let savepath = ''
+    const result = Conf.getValue('recordSavePath')
+    if(result.savedir===''){
+      savepath = app.getPath('downloads')
+    }else{
+      savepath = result.savedir
+    }
+    const midpath = Conf.getValue('windowsOption').title
+    const endPath = path.join(savepath,midpath,args.path)
+    shell.openPath(savepath).then((error) => {
       if (error) {
         console.error(`Failed to open directory: ${error}`);
       }

@@ -45,9 +45,9 @@
         </a-tab-pane>
         <a-tab-pane key="2" title="音视频转写">
           <div class="models-container">
-            <div class="title">支持多语言</div>
+            <div class="title-lang">支持多语言</div>
             <div class="item" v-for="item in multiModels" :key="item.value">
-              <div>
+              <div style="padding: 6px">
                 <div class="name">{{ item.label }}</div>
                 <div class="description">
                   <template v-if="item.speed >= 5">
@@ -63,14 +63,14 @@
                 </div>
               </div>
               <div>
-                <a-button>下载</a-button>
+                <a-button @click="handleDownloads(item)">下载</a-button>
               </div>
             </div>
           </div>
           <div class="models-container">
-            <div class="title">支持多英语</div>
+            <div class="title-lang" style="margin-top: 15px">支持英语</div>
             <div class="item" v-for="item in enModels" :key="item.value">
-              <div>
+              <div style="padding: 6px">
                 <div class="name">{{ item.label }}</div>
                 <div class="description">
                   <template v-if="item.speed >= 5">
@@ -86,7 +86,7 @@
                 </div>
               </div>
               <div>
-                <a-button>下载</a-button>
+                <a-button @click="handleDownloads(item)">下载</a-button>
               </div>
             </div>
           </div>
@@ -182,8 +182,8 @@ const handleSubmit = () => {
     alert("保存成功");
   });
 };
-const handleBack = () => {
-  router.back();
+const handleDownloads = (item) => {
+  alert(item.downloadLink)
 };
 const handleCancel = () => {
   router.push({ path: "/record" });
@@ -203,28 +203,30 @@ const handleCancel = () => {
 }
 
 .models-container {
-  margin: 10px 15px;
-  .title{
+  // margin: 10px 15px;
+  .title-lang{
     text-align: left;
-    font-size:20px;
+    font-size: 18px;
     font-weight: 800;
     color: rgb(var(--primary-6));
-    margin-bottom: 20px;
-    padding:0
+    // margin-bottom: 20px;
+    margin-left: 12px;
+    padding: 10px 0;
   }
   .item {
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid #eee;
-    padding: 10px 0;
+    padding: 8px;
     .name {
       font-size: 16px;
       font-weight: bold;
       text-align: left;
     }
     .description {
-      font-size: 14px;
+      font-size: 13px;
       color: rgb(var(--color-bg-2));
+      margin-top: 10px;
     }
   }
 }

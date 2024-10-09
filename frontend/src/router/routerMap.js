@@ -1,5 +1,3 @@
-import { compact } from "lodash";
-
 /**
  * 基础路由
  * @type { *[] }
@@ -10,13 +8,12 @@ const constantRouterMap = [
   {
     path: "/",
     name: "RecordVideo",
-    // component: Layout,
     redirect:'/recordvideo',
     children: [
       {
         path: "/recordvideo",
         name: "RecordVideoIndex",
-        component: () => import("@/views/record/Index.vue"),
+        component: () => import("@/views/index.vue"),
         meta: {
           ignoreCache: false,
         },
@@ -26,12 +23,11 @@ const constantRouterMap = [
   {
     path: "/record/setting",
     name: "RecordSetting",
-    // redirect: { name: 'RecordSetting' },
     children: [
       {
         path: "/record/setting",
         name: "RecordSetting",
-        component: () => import("@/views/record/setting.vue"),
+        component: () => import("@/views/setting.vue"),
       },
     ],
   },

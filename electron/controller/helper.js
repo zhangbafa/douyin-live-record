@@ -18,6 +18,7 @@ class HelperController extends Controller {
     super(ctx);
   }
 
+  // 打开新窗口
   createWindow(args) {
     const { type, content, windowName, windowTitle,width=360,height=660 } = args;
     let contentUrl = null;
@@ -58,6 +59,17 @@ class HelperController extends Controller {
   }
 
 
+  // 
+  // 
+  /**
+   * 下载文件 this.electron.mainWindow;
+   * @param {*} args 
+   * @param {*} event 
+   * @returns 
+   */
+  async downloadFile(args,event){
+    return ''
+  }
   /**
    * 所有方法接收两个参数
    * @param args 前端传的参数

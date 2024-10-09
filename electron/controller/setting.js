@@ -25,6 +25,10 @@ class SettingController extends Controller {
    */
   async getConfig(){
     const config = Conf.getValue('recordSavePath')
+    if(config?.savedir===''){
+      const defaultPath = app.getPath('downloads');
+      config.savedir = defaultPath
+    }
     return config
   }
 
@@ -33,10 +37,7 @@ class SettingController extends Controller {
    */
   async getCookie(){
     const config = Conf.getValue('recordSavePath')
-    if(config && ('cookie' in config)){
-      return config.cookie
-    }
-    return {}
+    return config.cookie
   }
 
   /**

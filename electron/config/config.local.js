@@ -28,7 +28,12 @@ module.exports = (appInfo) => {
   /**
    * 录制视频配置
    */
-  config.recordSavePath={}
+  config.recordSavePath={
+    savedir: "",
+    segment: false,
+    segmentDuration: 10,
+    cookie: "",
+  }
 
   return {
     ...config
