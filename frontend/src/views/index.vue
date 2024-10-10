@@ -213,7 +213,7 @@ import { Rocket, CirclePause, Video, SquarePlay, Music } from "lucide-vue-next";
 import stickybits from "stickybits";
 import { ipc } from "@/utils/ipcRenderer";
 import { recordApi, helperApi,settingApi } from "@/api/main";
-import { cookie, isLive } from "@/utils/islive";
+import { isLive } from "@/utils/islive";
 
 const router = useRouter();
 const activeKey = ref("2");
@@ -224,11 +224,14 @@ onMounted(() => {
 const userCookie = ref('')
 ipc.invoke(settingApi.getCookie).then(res=>{
   userCookie.value = res
-  Notification.info({
+  if(!userCookie.value){
+    Notification.info({
       title: "系统提示",
       content: "请现在系统设置中填写抖音Cookie",
       position: "bottomRight",
     });
+  }
+  
 })
 // 添加直播间
 const form = reactive({
@@ -245,7 +248,7 @@ const getLiveInfo=(link,type="multi")=>{
         return
       }
       const roomID = element.match(/\d+/)[0];
-      isLive(roomID, cookie).then((res) => {
+      isLive(roomID, userCookie.value).then((res) => {
         const data = {
           id: roomID,
           name: res.nickname,
@@ -317,7 +320,7 @@ fetchList();
 const checkLiveId = ref(0);
 const handleisLive = (item) => {
   checkLiveId.value = item.id;
-  isLive(item.id, cookie).then((res) => {
+  isLive(item.id, userCookie).then((res) => {
     const index = zhuboList.value.findIndex((zhubo) => zhubo.id === item.id);
     if (res.status === "2") {
       zhuboList.value[index].islive = 2;
@@ -346,7 +349,7 @@ const handleStartRecord = async (item, type) => {
     return false;
   }
   
-  const pullStream = await isLive(item.id, cookie)
+  const pullStream = await isLive(item.id, userCookie.value)
   console.log(pullStream)
   let pullStreamUrl = ''
   if(pullStream.streamUrl){
@@ -391,7 +394,7 @@ const handleHomePage = (item) => {
 };
 // 打开视频所在目录
 const handleOpenDirname = (item) => {
-  ipc.invoke(recordApi.openVideoDir, { path: item.title });
+  ipc.invoke(recordApi.openVideoDir, { path: item.name,recording: item.recording });
 };
 // 删除直播间
 const handleDeleteLive = (item) => {

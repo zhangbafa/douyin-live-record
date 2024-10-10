@@ -7,7 +7,6 @@ const {shell,app: electronApp,} = require('electron')
 const { startRecording,stopRecording } = require('../utils/record')
 const Utils = require('ee-core/utils');
 const UtilsHelper = require('ee-core/utils/helper');
-const {isLive,cookie} = require('../utils/islive')
 const HttpClient = require('ee-core/httpclient');
 const Conf = require('ee-core/config')
 const path = require('path')
@@ -72,14 +71,19 @@ class RecordController extends Controller {
   async openVideoDir(args){
     let savepath = ''
     const result = Conf.getValue('recordSavePath')
-    if(result.savedir===''){
-      savepath = app.getPath('downloads')
+    if(result && result.savedir){
+      savepath = result?.savedir
     }else{
-      savepath = result.savedir
+      savepath = app.getPath('downloads')
     }
     const midpath = Conf.getValue('windowsOption').title
-    const endPath = path.join(savepath,midpath,args.path)
-    shell.openPath(savepath).then((error) => {
+    let endPath=''
+    if(args.recording==1 || args.recording==2){
+      endPath = path.join(savepath,midpath,args.path)
+    }else{
+      endPath = path.join(savepath,midpath)
+    }
+    shell.openPath(endPath).then((error) => {
       if (error) {
         console.error(`Failed to open directory: ${error}`);
       }

@@ -37,7 +37,7 @@ class SettingController extends Controller {
    */
   async getCookie(){
     const config = Conf.getValue('recordSavePath')
-    return config.cookie
+    return config?.cookie
   }
 
   /**
